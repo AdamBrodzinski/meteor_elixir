@@ -14,8 +14,13 @@ if (Meteor.isClient) {
   const channel = socket.channel("rooms:lobby", {})
 
   channel.join()
-  .receive("ok",    resp => console.log("Joined successfully", resp))
-  .receive("error", resp => console.log("Unable to join",      resp))
+  // prime minimongo with last 20 chats on succ. join
+  .receive("ok", resp => {
+    resp.initialChats.forEach(doc => {
+      Chats.insert(doc);
+    });
+  })
+  .receive("error", resp => alert("Unable to join:" + resp.reason))
 
   channel.on("new_msg", data => {
     // insert in our local minimongo cache

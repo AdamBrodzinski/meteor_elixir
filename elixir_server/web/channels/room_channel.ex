@@ -3,7 +3,11 @@ defmodule Chatty.RoomChannel do
 
   def join("rooms:lobby", payload, socket) do
     if authorized?(payload) do
-      {:ok, socket}
+      payload = %{"initialChats" => [
+        %{"_id" => "f1", "username" => "Adam", "message" => "Foo", "time" => 1447536733075},
+        %{"_id" => "f2", "username" => "Adam", "message" => "Bar", "time" => 1447536733079}
+      ]}
+      {:ok, payload, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
