@@ -1,6 +1,6 @@
 // we'll use a local collection to store incoming data
 Chats = new Mongo.Collection(null);
-//Chats = new Mongo.Collection('chats');
+// old collection - Chats = new Mongo.Collection('chats');
 
 if (Meteor.isClient) {
   /* Wire up Phoenix on startup */
@@ -22,9 +22,9 @@ if (Meteor.isClient) {
   })
   .receive("error", resp => alert("Unable to join:" + resp.reason))
 
-  channel.on("new_msg", data => {
+  channel.on("new_msg", doc => {
     // insert in our local minimongo cache
-    Chats.insert({username: data.username, message: data.message});
+    Chats.insert({username: doc.username, message: doc.message, time: doc.time});
   })
   /* End Phoenix wiring */
 
