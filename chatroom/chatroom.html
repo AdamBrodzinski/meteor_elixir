@@ -1,0 +1,41 @@
+<head>
+  <title>Chatroom</title>
+</head>
+
+<body>
+  {{> room}}
+</body>
+
+<template name='room'>
+  <div class="container" style="max-width: 600px;">
+    <h1>Welcome to Meteor Chat!</h1><br>
+    <h4>Lobby:</h4>
+    {{> chats}}
+    {{> inputBar}}
+  </div>
+</template>
+
+
+<template name='chats'>
+  <ul>
+    {{#each chatData}}
+      {{> chat}}
+    {{/each}}
+  </ul>
+</template>
+
+
+<template name='chat'>
+  <li><b>[{{name}}]:</b> {{message}}</li>
+</template>
+
+
+<template name='inputBar'>
+  <div class="input-bar form-group">
+    <form>
+      <input type='text' placeholder='username' />
+      <input type='text' placeholder='message' />
+      <button class='btn btn-primary'>Submit</button>
+    </form>
+  </div>
+</template>
