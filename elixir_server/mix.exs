@@ -18,7 +18,7 @@ defmodule Chatty.Mixfile do
   def application do
     [mod: {Chatty, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :mongodb_ecto]]
   end
 
   # Specifies which paths to compile per environment
@@ -31,7 +31,7 @@ defmodule Chatty.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.0.2"},
      {:phoenix_ecto, "~> 1.1"},
-     {:postgrex, ">= 0.0.0"},
+     {:mongodb_ecto, "~> 0.1"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"}]

@@ -27,3 +27,10 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+config :my_app, Repo,
+  database: "ecto_simple",
+  username: "mongodb",
+  password: "mongosb",
+  hostname: "localhost"
+
