@@ -1,4 +1,6 @@
-Chats = new Mongo.Collection('chats');
+// we'll use a local collection to store incoming data
+Chats = new Mongo.Collection(null);
+//Chats = new Mongo.Collection('chats');
 
 if (Meteor.isClient) {
   /* Wire up Phoenix on startup */
@@ -15,8 +17,9 @@ if (Meteor.isClient) {
   .receive("ok",    resp => console.log("Joined successfully", resp))
   .receive("error", resp => console.log("Unable to join",      resp))
 
-  channel.on("new_msg", p => {
-    console.log('new message', p);
+  channel.on("new_msg", data => {
+    // insert in our local minimongo cache
+    Chats.insert({username: data.username, message: data.message});
   })
   /* End Phoenix wiring */
 
@@ -33,9 +36,10 @@ if (Meteor.isClient) {
       let username = $('input:eq(0)').val();
       let message = $('input:eq(1)').val();
 
-      Chats.insert({name: username, message, time: Date.now()})
+      channel.push('new_msg',{username, message, time: Date.now()})
+      // old method - Chats.insert({username, message, time: Date.now()})
 
-      message = $('input:eq(1)').val('');
+      message = $('input:eq(1)').val(''); // reset form send
       $("ul").scrollTop($("ul").scrollTop() + 100);
     }
   });
