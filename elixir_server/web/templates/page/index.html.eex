@@ -1,0 +1,17 @@
+<div class="container" style="max-width: 600px;">
+  <h1>Welcome to Meteor Chat!</h1><br>
+  <h4>Lobby:</h4>
+
+  <ul id='chats'>
+    <li><b>[Adam]</b> Hello World</li>
+  </ul>
+
+  <div class="input-bar form-group">
+    <form>
+      <input id='user' type='text' placeholder='username' />
+      <input id='msg' type='text' placeholder='message' />
+      <button class='btn btn-primary'>Submit</button>
+    </form>
+  </div>
+</div>
+
