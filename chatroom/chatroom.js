@@ -23,8 +23,7 @@ if (Meteor.isClient) {
   .receive("error", resp => alert("Unable to join:" + resp.reason))
 
   channel.on("new_msg", doc => {
-    // insert in our local minimongo cache
-    Chats.insert({username: doc.username, message: doc.message, time: doc.time});
+    Chats.upsert(doc._id, doc); // insert in local minimongo cache
   })
   /* End Phoenix wiring */
 
@@ -41,8 +40,8 @@ if (Meteor.isClient) {
       let username = $('input:eq(0)').val();
       let message = $('input:eq(1)').val();
 
-      channel.push('new_msg',{username, message, time: Date.now()})
-      // old method - Chats.insert({username, message, time: Date.now()})
+      const id = Chats.insert({username, message, time: Date.now()})
+      channel.push('new_msg', Chats.findOne(id))
 
       message = $('input:eq(1)').val(''); // reset form send
       $("ul").scrollTop($("ul").scrollTop() + 100);
