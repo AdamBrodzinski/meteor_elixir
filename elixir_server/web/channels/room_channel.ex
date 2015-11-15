@@ -12,8 +12,16 @@ defmodule Chatty.RoomChannel do
   end
 
   def handle_in("new_msg", payload, socket) do
-    broadcast! socket, "new_msg", payload
-    {:noreply, socket}
+    # uses the id from payload in Model struct
+    changeset = Chat.changeset(%Chat{_id: payload["_id"]}, payload)
+    {status, result} = Repo.insert(changeset);
+
+    if status == :ok do
+      broadcast! socket, "new_msg", result
+      {:noreply, socket}
+    else
+      {:noreply, socket}
+    end
   end
 
   # Add authorization logic here as required.
