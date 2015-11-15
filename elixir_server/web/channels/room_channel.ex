@@ -3,8 +3,13 @@ defmodule Chatty.RoomChannel do
   alias Chatty.Chat
 
   def join("rooms:lobby", payload, socket) do
+    query = from c in Chat,
+         select: c,
+         order_by: [desc: :time],
+         limit: 10
+
     if authorized?(payload) do
-      data = %{"initialChats" => Repo.all(Chat)}
+      data = %{"initialChats" => Repo.all(query)}
       {:ok, data, socket}
     else
       {:error, %{reason: "unauthorized"}}
