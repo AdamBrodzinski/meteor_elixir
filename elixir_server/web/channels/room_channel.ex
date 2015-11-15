@@ -1,13 +1,11 @@
 defmodule Chatty.RoomChannel do
   use Chatty.Web, :channel
+  alias Chatty.Chat
 
   def join("rooms:lobby", payload, socket) do
     if authorized?(payload) do
-      payload = %{"initialChats" => [
-        %{"_id" => "f1", "username" => "Adam", "message" => "Foo", "time" => 1447536733075},
-        %{"_id" => "f2", "username" => "Adam", "message" => "Bar", "time" => 1447536733079}
-      ]}
-      {:ok, payload, socket}
+      data = %{"initialChats" => Repo.all(Chat)}
+      {:ok, data, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
