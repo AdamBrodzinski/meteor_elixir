@@ -23,7 +23,8 @@ if (Meteor.isClient) {
   .receive("error", resp => alert("Unable to join:" + resp.reason))
 
   channel.on("new_msg", doc => {
-    Chats.upsert(doc._id, doc); // insert in local minimongo cache
+    // upsert because messages we sent will result in duplicates if we insert
+    Chats.upsert(doc._id, doc);
   })
   /* End Phoenix wiring */
 
@@ -40,6 +41,7 @@ if (Meteor.isClient) {
       let username = $('input:eq(0)').val();
       let message = $('input:eq(1)').val();
 
+      // insert a doc into the cache for instant update
       const id = Chats.insert({username, message, time: Date.now()})
       channel.push('new_msg', Chats.findOne(id))
 
